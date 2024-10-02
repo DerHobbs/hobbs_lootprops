@@ -14,3 +14,4 @@ Important Configurations:
 - Texts: Customizable messages for players (e.g., loot received, inventory full).
 
 This script is highly flexible, allowing you to turn any world object into a source of loot, with fully customizable items and interactions.
+https://streamable.com/0kxh95
