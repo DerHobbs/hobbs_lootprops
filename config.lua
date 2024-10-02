@@ -66,15 +66,15 @@ Config.Props = {
         label = 'Chop down the tree',
         progressBarText = 'Chopping wood...',
         searchDuration = 8000,
-        -- Custom animation and prop for tree interaction (axe)
+        -- Custom animation and prop for tree interaction (no prop, using hands to collect)
         animation = {
-            dict = 'amb@prop_human_bum_bin@base', -- Animation für das Sammeln mit den Händen nach vorne
-            clip = 'base', -- Der Grundclip der Animation
-            prop = false, -- Kein Prop wird verwendet
-            bone = 0, -- Kein spezifischer Bone benötigt
-            pos = { x = 0.0, y = 0.0, z = 0.0 }, -- Keine Position notwendig
-            rot = { x = 0.0, y = 0.0, z = 0.0 } -- Keine Rotation notwendig
-        }        
+            dict = 'amb@prop_human_bum_bin@base', -- Animation for collecting with hands reaching forward
+            clip = 'base', -- The base clip of the animation
+            prop = false, -- No prop is used, just hands
+            bone = 0, -- No specific bone is required
+            pos = { x = 0.0, y = 0.0, z = 0.0 }, -- No position adjustment needed
+            rot = { x = 0.0, y = 0.0, z = 0.0 } -- No rotation adjustment needed
+        }
     }
     -- Add more here if you want to add more props
 }
