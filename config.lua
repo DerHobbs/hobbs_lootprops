@@ -43,6 +43,38 @@ Config.Props = {
         progressBarText = 'Collecting useful items...',
         -- Duration of the progress bar in milliseconds (8000ms = 8 seconds)
         searchDuration = 8000
+        -- Custom animation and prop for vehicle wrecks
+        animation = {
+            dict = 'amb@world_human_welding@male@base',
+            clip = 'base',
+            prop = 'prop_weld_torch',
+            bone = 57005, -- Right hand bone
+            pos = { x = 0.1, y = 0.02, z = 0.0 },
+            rot = { x = 165.0, y = 0.0, z = 180.0 }
+        }
+    },
+    { 
+        props = {
+            -- List of tree props
+            GetHashKey('prop_haybale_02')
+        }, 
+        loot = { 
+            { item = 'wood', amount = {1, 5} }
+        }, 
+        maxSearches = 3, 
+        cooldown = 300,
+        label = 'Chop down the tree',
+        progressBarText = 'Chopping wood...',
+        searchDuration = 8000,
+        -- Custom animation and prop for tree interaction (axe)
+        animation = {
+            dict = 'amb@prop_human_bum_bin@base', -- Animation für das Sammeln mit den Händen nach vorne
+            clip = 'base', -- Der Grundclip der Animation
+            prop = false, -- Kein Prop wird verwendet
+            bone = 0, -- Kein spezifischer Bone benötigt
+            pos = { x = 0.0, y = 0.0, z = 0.0 }, -- Keine Position notwendig
+            rot = { x = 0.0, y = 0.0, z = 0.0 } -- Keine Rotation notwendig
+        }        
     }
     -- Add more here if you want to add more props
 }
@@ -54,19 +86,4 @@ Config.Texts = {
     propOnCooldown = "There is nothing left to gather here, try again later.",
     -- Notification text when the player doesn't have enough space to carry items
     notEnoughSpace = "You cannot carry any more!"
-}
-
-Config.Animations = {
-    -- Animation dictionary for the welding animation
-    dict = 'amb@world_human_welding@male@base',
-    -- Animation clip for the welding animation
-    clip = 'base',
-    -- Prop used during the welding animation
-    prop = 'prop_weld_torch',
-    -- Bone index for attaching the prop (57005 is usually the right hand)
-    bone = 57005,
-    -- Position offset of the prop relative to the bone
-    pos = { x = 0.1, y = 0.02, z = 0.0 },
-    -- Rotation offset of the prop relative to the bone
-    rot = { x = 165.0, y = 0.0, z = 180.0 }
 }
