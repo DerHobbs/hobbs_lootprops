@@ -1,6 +1,6 @@
 local ox_target = exports.ox_target
 local searchedProps = {}
-local weldTorch = nil
+local activeProp = nil
 
 Citizen.CreateThread(function()
     for _, propData in ipairs(Config.Props) do
@@ -21,25 +21,27 @@ Citizen.CreateThread(function()
     end
 end)
 
-local function createWeldingProp(playerPed)
-    local propModel = GetHashKey(Config.Animations.prop)
-    
-    RequestModel(propModel)
-    while not HasModelLoaded(propModel) do
-        Wait(0)
-    end
+local function createCustomProp(playerPed, animData)
+    if animData.prop and animData.prop ~= false then
+        local propModel = GetHashKey(animData.prop)
 
-    weldTorch = CreateObject(propModel, 1.0, 1.0, 1.0, true, true, true)
-    AttachEntityToEntity(weldTorch, playerPed, GetPedBoneIndex(playerPed, Config.Animations.bone),
-        Config.Animations.pos.x, Config.Animations.pos.y, Config.Animations.pos.z,
-        Config.Animations.rot.x, Config.Animations.rot.y, Config.Animations.rot.z,
-        false, false, false, true, 2, true)
+        RequestModel(propModel)
+        while not HasModelLoaded(propModel) do
+            Wait(0)
+        end
+
+        activeProp = CreateObject(propModel, 1.0, 1.0, 1.0, true, true, true)
+        AttachEntityToEntity(activeProp, playerPed, GetPedBoneIndex(playerPed, animData.bone),
+            animData.pos.x, animData.pos.y, animData.pos.z,
+            animData.rot.x, animData.rot.y, animData.rot.z,
+            false, false, false, true, 2, true)
+    end
 end
 
-local function removeWeldingProp()
-    if weldTorch and DoesEntityExist(weldTorch) then
-        DeleteObject(weldTorch)
-        weldTorch = nil
+local function removeCustomProp()
+    if activeProp and DoesEntityExist(activeProp) then
+        DeleteObject(activeProp)
+        activeProp = nil
     end
 end
 
@@ -89,13 +91,16 @@ AddEventHandler('collect_scrap', function(data)
         end
     end
 
-    RequestAnimDict(Config.Animations.dict)
-    while not HasAnimDictLoaded(Config.Animations.dict) do
+    local animData = selectedProp.animation
+
+    RequestAnimDict(animData.dict)
+    while not HasAnimDictLoaded(animData.dict) do
         Wait(0)
     end
 
-    TaskPlayAnim(playerPed, Config.Animations.dict, Config.Animations.clip, 3.0, -8.0, selectedProp.searchDuration / 1000, 15, 0, false, false, false)
-    createWeldingProp(playerPed)
+    TaskPlayAnim(playerPed, animData.dict, animData.clip, 3.0, -8.0, selectedProp.searchDuration / 1000, 15, 0, false, false, false)
+
+    createCustomProp(playerPed, animData)
 
     if lib.progressBar({
         duration = selectedProp.searchDuration,
@@ -113,9 +118,9 @@ AddEventHandler('collect_scrap', function(data)
         TriggerServerEvent('check_if_can_carry', randomLoot.item, amount, entityId)
     end
 
-    StopAnimTask(playerPed, Config.Animations.dict, Config.Animations.clip, 2.0)
+    StopAnimTask(playerPed, animData.dict, animData.clip, 2.0)
     Wait(500)
-    removeWeldingProp()
+    removeCustomProp()
 
     searchData.count = searchData.count + 1
     if searchData.count >= selectedProp.maxSearches then
